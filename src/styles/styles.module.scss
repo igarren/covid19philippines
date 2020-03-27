@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css?family=Sen:400,700&display=swap');
+
+html,body{
+    font-family: 'Sen', sans-serif;
+}
+
+.Dashboard{
+    h2{
+        &.Deaths{ color: darkred }
+        &.Confirmed{ color: red }
+        &.Recovered{ color: green }
+    }
+
+    p{
+        font-size: 1em;
+    }
+}
+
+.CityData{
+    text-align: center;
+    padding: 5% 10%;
+}
