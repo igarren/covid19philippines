@@ -1,8 +1,8 @@
 module.exports = {
   siteMetadata: {
     title: `COVID-19 Philipppines`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    description: `View the current situation of corona virus in the Philippines`,
+    author: `@igarren`,
   },
   plugins: [
     {

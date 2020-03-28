@@ -104,7 +104,8 @@ const IndexPage = () => {
 
   return (
     <Layout>
-      <SEO title="Home" />
+      <SEO title="Home" 
+        description="View the current situation of corona virus in the Philippines" />
       <div className={classes.Container}>
         <h2><img className='corona' src="https://img.icons8.com/metro/26/000000/coronavirus.png" />COVID-19 Philippines</h2>
 
