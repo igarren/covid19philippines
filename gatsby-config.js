@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `COVID-19 Philipppines`,
-    description: `View the current situation of corona virus in the Philippines`,
+    description: `Status of the COVID-19 (Coronovirus) outbreak in the Philippines`,
     author: `@igarren`,
   },
   plugins: [
