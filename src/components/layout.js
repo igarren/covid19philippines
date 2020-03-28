@@ -26,9 +26,16 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata.title} />
       <Container>
+       
         {children}
+        <br/>
+        <strong>Sources :</strong><br/>
+        Data from <a href="https://ncovtracker.doh.gov.ph/">DOH Philippines</a> <br/>
+        Images from<a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public"> WHO</a><br/>
+        Coronavirus icon by<a href="https://icons8.com/icon/10220/coronavirus">Icons8</a><br/>
+        
+      
       </Container>
     </>
   )

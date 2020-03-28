@@ -4,11 +4,17 @@ import axios from 'axios';
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import * as ENDPOINT from '../../const'
-import { Grid, Loader, Table, Divider } from 'semantic-ui-react'
+import { Grid, Loader, Table, Icon, Button, Segment } from 'semantic-ui-react'
 import classes from '../styles/styles.module.scss';
+import CountUp from 'react-countup';
+import todo2 from '../images/corona-todo-2.png';
+import todo3 from '../images/corona-todo-3.png';
+import todo4 from '../images/corona-todo-4.png';
+import todo1 from '../images/corona-todo-1.png';
 
 const loader = <Loader active inline />;
 const IndexPage = () => {
+
 
 
   const [dashboard, setDashboard] = useState({
@@ -99,44 +105,94 @@ const IndexPage = () => {
   return (
     <Layout>
       <SEO title="Home" />
-      <Loader content='Loading' />
-      <Grid className={classes.Dashboard} textAlign='center' columns={3} >
-        <Grid.Row>
-          <Grid.Column>
+      <div className={classes.Container}>
+        <h2><img className='corona' src="https://img.icons8.com/metro/26/000000/coronavirus.png" />COVID-19 Philippines</h2>
 
-            <h2 className={classes.Confirmed}>{dashboardLoading ? loader : dashboard.confirmed}</h2>
-            <p>Confirmed</p>
-          </Grid.Column>
-          <Grid.Column>
-            <h2 className={classes.Deaths}>{dashboardLoading ? loader : dashboard.deaths}</h2>
-            <p>Deaths</p>
-          </Grid.Column>
-          <Grid.Column>
-            <h2 className={classes.Recovered}>{dashboardLoading ? loader : dashboard.recovered}</h2>
-            <p>Recovered</p>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column>
-            <h2>{dashboardLoading ? loader : dashboard.tests}</h2>
-            <p>Tests Conducted</p>
-          </Grid.Column>
-          <Grid.Column>
-            <h2>{dashboardLoading ? loader : dashboard.puis}</h2>
-            <p>Person under investigation</p>
-          </Grid.Column>
+        <Grid stackable className={classes.Dashboard} textAlign='center' columns={3} >
+          <Grid.Row>
+            <Grid.Column>
 
-          <Grid.Column>
-            <h2>{dashboardLoading ? loader : dashboard.pums}</h2>
-            <p>Person under monitoring</p>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-      <div className={classes.CityData}>
-      <h2>Location Breakdown</h2>
-      {byCityData}
+              <h2 className={classes.Confirmed}><Icon name='hospital outline' size='small' />{dashboardLoading ? loader : <CountUp end={dashboard.confirmed} />}</h2>
+              <p>Confirmed</p>
+            </Grid.Column>
+            <Grid.Column>
+              <h2 className={classes.Deaths}><Icon name='bed' size='small' />{dashboardLoading ? loader : <CountUp end={dashboard.deaths} />}</h2>
+              <p>Deaths</p>
+            </Grid.Column>
+            <Grid.Column>
+              <h2 className={classes.Recovered}><Icon name='medkit' size='small' />{dashboardLoading ? loader : <CountUp end={dashboard.recovered} />}</h2>
+              <p>Recovered</p>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+              <h2>{dashboardLoading ? loader : <CountUp end={dashboard.tests} />}</h2>
+              <p>Tests Conducted</p>
+            </Grid.Column>
+            <Grid.Column>
+              <h2>{dashboardLoading ? loader : <CountUp end={dashboard.puis} />}</h2>
+              <p>Patients under investigation</p>
+            </Grid.Column>
+
+            <Grid.Column>
+              <h2>{dashboardLoading ? loader : <CountUp end={dashboard.pums} />}</h2>
+              <p>People under monitoring</p>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+
+        <Grid stackable verticalAlign='middle' className={classes.Dashboard} >
+          <Grid.Row>
+            <Grid.Column width={12}>
+              <p>DOH launched the DOH COVID-19 emergency hotlines 02-894-COVID (02-894-26843) 
+                and 1555 in partnership with the National Emergency Hotline of the Department 
+                of Interior and Local Government (DILG), and PLDT and its wireless subsidiary 
+                Smart Communications Inc.
+              
+                Callers can ask questions if they suspect they are infected with COVID-19, 
+                or request assistance if they have symptoms and/or known exposure to confirmed 
+                cases or patients under investigation. The information collected from emergency 
+                calls is transmitted to the COVID-19 Emergency Operations Center and other relevant 
+                agencies for immediate facilitation and response.</p>
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <a href="tel:1555"><Button fluid primary>Smart/PLDT: 1555</Button></a>
+              <br/>
+              <a href="tel:894-26843"><Button fluid primary>Landline: <br/> 894-26843 </Button></a>
+            </Grid.Column>
+
+          </Grid.Row>
+        </Grid>
+        
+        <div>
+          <br/>
+          <h2>Residence of confirmed cases</h2>
+          {byCityData}
+
+        </div>
+        <br />
+        <br/>
+        <h2>How to protect yourself from Corona</h2>
+        <Grid stackable textAlign='center'  columns={3} >
+          <Grid.Row>
+            <Grid.Column>
+            <img src={todo2}/>
+            </Grid.Column>
+            <Grid.Column>
+            <img src={todo3}/>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+            <img src={todo4}/>
+            </Grid.Column>
+            <Grid.Column>
+            <img src={todo1}/>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </div>
-      
+
     </Layout>
   )
 }
