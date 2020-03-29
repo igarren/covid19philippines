@@ -22,8 +22,19 @@ import {
   Legend,
   Label,
 } from "recharts"
+import MapGL from 'react-map-gl';
+
+const TOKEN = "pk.eyJ1IjoiaWdhcnJlbiIsImEiOiJjazhhNXNuOWswZWR3M29wNDVleWtnbHZ3In0.-tQhxtaKcuSHgJYVDG42vA";
+
 const loader = <Loader active inline />
 const IndexPage = () => {
+  const [viewport, setViewport] = useState({
+    latitude: 10.668,
+    longitude: 120.640,
+    zoom: 4.92,
+    bearing: 0,
+    pitch: 0
+  });
   const [dashboard, setDashboard] = useState({
     updated: null,
     confirmed: 0,
@@ -106,6 +117,7 @@ const IndexPage = () => {
         title="Home"
         description="View the current situation of corona virus in the Philippines"
       />
+
       <div className={classes.Container}>
         <Grid textAlign="center" columns={2}>
           <Grid.Row>
@@ -207,12 +219,13 @@ const IndexPage = () => {
                 type="monotone"
                 dataKey="confirmed"
                 stackId="1"
-                stroke="#ffc658"
-                fill="#ffc658"
+                stroke="teal"
+                fill="#25aeae"
               />
             </AreaChart>
           </ResponsiveContainer>
         </div>
+
         <div className={classes.Hotline}>
           <Grid stackable verticalAlign="middle">
             <Grid.Row>
