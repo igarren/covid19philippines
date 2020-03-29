@@ -255,6 +255,7 @@ const IndexPage = () => {
               <Tooltip />
               <Legend align="center" />
               <Area
+                name="Deaths"
                 type="monotone"
                 dataKey="total_deaths"
                 stackId="1"
@@ -262,6 +263,7 @@ const IndexPage = () => {
                 fill="pink"
               />
               <Area
+                name="Recovered"
                 type="monotone"
                 dataKey="total_recovered"
                 stackId="1"
@@ -269,6 +271,7 @@ const IndexPage = () => {
                 fill="#82ca9d"
               />
               <Area
+                name="Confirmed"
                 type="monotone"
                 dataKey="total_confirmed"
                 stackId="1"
