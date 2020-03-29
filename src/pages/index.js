@@ -35,8 +35,8 @@ const IndexPage = () => {
 
       const confirmed = axios.get(ENDPOINT.GET_COMMON_CONST_ENDPOINT('confirmed'));
       const deaths = axios.get(ENDPOINT.GET_COMMON_CONST_ENDPOINT('deaths'));
-      const puis = axios.get(ENDPOINT.GET_COMMON_CONST_ENDPOINT('PUMs'));
-      const pums = axios.get(ENDPOINT.GET_COMMON_CONST_ENDPOINT('PUIs'));
+      const puis = axios.get(ENDPOINT.GET_COMMON_CONST_ENDPOINT('PUIs'));
+      const pums = axios.get(ENDPOINT.GET_COMMON_CONST_ENDPOINT('PUMs'));
       const tests = axios.get(ENDPOINT.GET_COMMON_CONST_ENDPOINT('tests'));
       const recovered = axios.get(ENDPOINT.GET_COMMON_CONST_ENDPOINT('recovered'));
 
@@ -109,7 +109,7 @@ const IndexPage = () => {
       <div className={classes.Container}>
         <h2><img className='corona' src="https://img.icons8.com/metro/26/000000/coronavirus.png" />COVID-19 Philippines</h2>
 
-        <Grid stackable className={classes.Dashboard} textAlign='center' columns={3} >
+        <Grid className={classes.Dashboard} textAlign='center' columns={3} >
           <Grid.Row>
             <Grid.Column>
 
