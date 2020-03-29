@@ -191,7 +191,7 @@ const IndexPage = () => {
                   </>
                 )}
               </h2>
-              <p>Active Cases</p>
+              <p>Active</p>
             </Grid.Column>
             <Grid.Column className={classes.Deaths}>
               <h2>
