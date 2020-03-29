@@ -3,32 +3,35 @@
 html,body,h1,h2,h3,h4,h5,p,a{
     font-family: 'Sen', sans-serif!important;
 }
-
+.Title{
+    position: relative;
+    img{
+        position: absolute;
+        margin-left: -35px;
+        margin-top: 3px;;
+    };
+}
 .Dashboard{
-    
+
     color: white;
     .Confirmed{
-        background: teal;
+        background: #4FB1B1;
         padding: 2%;
-        border: 2px solid #ccc;
         border-radius: 12px;
     }
     .Deaths{
-        background: red;
+        background: #e85850;
         padding: 2%;
-        border: 2px solid #ccc;
         border-radius: 12px;
     }
     .Recovered{
-        background: green;
+        background: #50af50;
         padding: 2%;
-        border: 2px solid #ccc;
         border-radius: 12px;
     }
-    .Critical{
-        background: #e07a00;
+    .Active{
+        background: #ea9024;
         padding: 2%;
-        border: 2px solid #ccc;
         border-radius: 12px;
     }
 
@@ -39,7 +42,7 @@ html,body,h1,h2,h3,h4,h5,p,a{
 
 .Chart{
     height: 300px;
-    margin : 5% 0;
+    margin : 45px 0;
 }
 
 .Hotline{
@@ -54,6 +57,18 @@ html,body,h1,h2,h3,h4,h5,p,a{
 .Button{
     border: 2px solid #ccc;
     box-sizing: border-box;
+}
+
+.Status{
+    animation: blink 1.2s infinite; 
+}
+
+@keyframes blink{
+    0%{     color: red;    }
+    49%{    color: red; }
+    60%{    color: transparent; }
+    99%{    color:transparent;  }
+    100%{   color: red;    }
 }
 
 @media only screen and (max-width: 600px) {

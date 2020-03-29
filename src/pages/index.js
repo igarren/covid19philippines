@@ -20,31 +20,20 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-  Label,
 } from "recharts"
-import MapGL from 'react-map-gl';
-
-const TOKEN = "pk.eyJ1IjoiaWdhcnJlbiIsImEiOiJjazhhNXNuOWswZWR3M29wNDVleWtnbHZ3In0.-tQhxtaKcuSHgJYVDG42vA";
-
+import { toDateString } from '../components/util'
 const loader = <Loader active inline />
 const IndexPage = () => {
-  const [viewport, setViewport] = useState({
-    latitude: 10.668,
-    longitude: 120.640,
-    zoom: 4.92,
-    bearing: 0,
-    pitch: 0
-  });
   const [dashboard, setDashboard] = useState({
     updated: null,
     confirmed: 0,
     deaths: 0,
     recovered: 0,
-    critical: 0,
-    puis: 0,
-    pums: 0,
-    tests: 0,
+    activeCases: 0,
+    newConfirmed: 0,
+    newDeaths: 0,
   })
+
 
   const [cityData, setCityData] = useState([])
   const [dailyDaity, setDailyData] = useState([])
@@ -55,45 +44,58 @@ const IndexPage = () => {
   useEffect(() => {
     const fethchDashboard = async () => {
       await axios
-        .get("https://corona-api.com/countries/PH")
+        .get(
+          "https://api.coronatracker.com/v3/stats/worldometer/country?countryCode=PH"
+        )
         .then(({ data }) => {
-          console.log(data)
+          console.log(data.length)
+          console.log(data[0])
+          if (data && data.length > 0) {
+            const date = toDateString(new Date(data[0].lastUpdated))
 
-          const date = new Date(data.data.updated_at)
-            .toISOString()
-            .slice(0, 19)
-            .replace(/-/g, "/")
-            .replace("T", " ")
-          setDashboard({
-            ...dashboard,
-            critical: data.data.latest_data.critical,
-            confirmed: data.data.latest_data.confirmed,
-            deaths: data.data.latest_data.deaths,
-            puis: data.data.latest_data.critical,
-            recovered: data.data.latest_data.recovered,
-            updated: date,
-          })
-
-          setDailyData(data.data.timeline.reverse())
-
+            setDashboard({
+              ...dashboard,
+              activeCases: data[0].activeCases,
+              confirmed: data[0].totalConfirmed,
+              deaths: data[0].totalDeaths,
+              recovered: data[0].totalRecovered,
+              newConfirmed: data[0].dailyConfirmed,
+              newDeaths: data[0].dailyDeaths,
+              updated: date,
+            })
+          }
           setDashboardLoading(false)
         })
     }
-    const fetchDataByCity = async () => {
-      const cityData = await axios.get(ENDPOINT.BY_CITY_ENDPOINT)
-      const respCity = cityData.data.features
+    const fethchDaily = async () => {
 
-      setCityData(respCity)
-      setCityLoading(false)
+      const date = new Date();
+      const firstDay = toDateString(new Date(date.getFullYear(), date.getMonth(), 1));
+      const lastDay = toDateString(new Date(date.getFullYear(), date.getMonth() + 1, 0));
+      await axios
+        .get(
+          `https://api.coronatracker.com/v3/analytics/trend/country?countryCode=PH&startDate=2020-01-23&endDate=${lastDay}`
+        )
+        .then(({ data }) => {
+          console.log(data);
+          setDailyData(data);
+        })
+    }
+    const fetchDataByCity = async () => {
+      await axios.get(ENDPOINT.BY_CITY_ENDPOINT).then(({ data }) => {
+        setCityData(data.features)
+        setCityLoading(false)
+      })
     }
     fethchDashboard()
     fetchDataByCity()
+    fethchDaily()
   }, [])
 
   let byCityData = cityLoading ? (
     loader
   ) : (
-    <Table singleLine>
+    <Table striped singleLine>
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>City</Table.HeaderCell>
@@ -111,6 +113,7 @@ const IndexPage = () => {
     </Table>
   )
 
+
   return (
     <Layout>
       <SEO
@@ -122,7 +125,7 @@ const IndexPage = () => {
         <Grid textAlign="center" columns={2}>
           <Grid.Row>
             <Grid.Column>
-              <h2>
+              <h2 className={classes.Title}>
                 <img
                   className="corona"
                   src="https://img.icons8.com/metro/26/000000/coronavirus.png"
@@ -146,15 +149,42 @@ const IndexPage = () => {
                 {dashboardLoading ? (
                   loader
                 ) : (
-                  <CountUp end={dashboard.confirmed} />
+                  <>
+                    <CountUp end={dashboard.confirmed} />
+                    <span>
+                      (+
+                      <CountUp end={dashboard.newConfirmed} />)
+                    </span>{" "}
+                  </>
                 )}
               </h2>
               <p>Confirmed</p>
             </Grid.Column>
+            <Grid.Column className={classes.Active}>
+              <h2>
+                <Icon name="group" size="small" />
+                {dashboardLoading ? (
+                  loader
+                ) : (
+                  <CountUp end={dashboard.activeCases} />
+                )}
+              </h2>
+              <p>Critical</p>
+            </Grid.Column>
             <Grid.Column className={classes.Deaths}>
               <h2>
                 <Icon name="bed" size="small" />
-                {dashboardLoading ? loader : <CountUp end={dashboard.deaths} />}
+                {dashboardLoading ? (
+                  loader
+                ) : (
+                  <>
+                    <CountUp end={dashboard.deaths} />
+                    <span>
+                      (+
+                      <CountUp end={dashboard.newDeaths} />)
+                    </span>{" "}
+                  </>
+                )}
               </h2>
               <p>Deaths</p>
             </Grid.Column>
@@ -164,21 +194,12 @@ const IndexPage = () => {
                 {dashboardLoading ? (
                   loader
                 ) : (
-                  <CountUp end={dashboard.recovered} />
+                  <>
+                    <CountUp end={dashboard.recovered} />
+                  </>
                 )}
               </h2>
               <p>Recovered</p>
-            </Grid.Column>
-            <Grid.Column className={classes.Critical}>
-              <h2>
-                <Icon name="lightning" size="small" />
-                {dashboardLoading ? (
-                  loader
-                ) : (
-                  <CountUp end={dashboard.critical} />
-                )}
-              </h2>
-              <p>Critical</p>
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -197,27 +218,27 @@ const IndexPage = () => {
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
+              <XAxis dataKey={"last_updated"}  tickFormatter={tick => (tick.split('T')[0])} />
               <YAxis />
               <Tooltip />
-              <Legend />
+              <Legend align="center" />
               <Area
                 type="monotone"
-                dataKey="deaths"
+                dataKey="total_deaths"
                 stackId="1"
                 stroke="red"
                 fill="pink"
               />
               <Area
                 type="monotone"
-                dataKey="recovered"
+                dataKey="total_recovered"
                 stackId="1"
                 stroke="#82ca9d"
                 fill="#82ca9d"
               />
               <Area
                 type="monotone"
-                dataKey="confirmed"
+                dataKey="total_confirmed"
                 stackId="1"
                 stroke="teal"
                 fill="#25aeae"
@@ -225,7 +246,6 @@ const IndexPage = () => {
             </AreaChart>
           </ResponsiveContainer>
         </div>
-
         <div className={classes.Hotline}>
           <Grid stackable verticalAlign="middle">
             <Grid.Row>
