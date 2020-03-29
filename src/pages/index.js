@@ -1,90 +1,88 @@
 import React, { useEffect, useState } from "react"
 import { Link } from "gatsby"
-import axios from 'axios';
+import axios from "axios"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
-import * as ENDPOINT from '../../const'
-import { Grid, Loader, Table, Icon, Button, Segment } from 'semantic-ui-react'
-import classes from '../styles/styles.module.scss';
-import CountUp from 'react-countup';
-import todo2 from '../images/corona-todo-2.png';
-import todo3 from '../images/corona-todo-3.png';
-import todo4 from '../images/corona-todo-4.png';
-import todo1 from '../images/corona-todo-1.png';
-
-const loader = <Loader active inline />;
+import * as ENDPOINT from "../../const"
+import { Grid, Loader, Table, Icon, Button, Segment } from "semantic-ui-react"
+import classes from "../styles/styles.module.scss"
+import CountUp from "react-countup"
+import todo2 from "../images/corona-todo-2.png"
+import todo3 from "../images/corona-todo-3.png"
+import todo4 from "../images/corona-todo-4.png"
+import todo1 from "../images/corona-todo-1.png"
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  Label,
+} from "recharts"
+const loader = <Loader active inline />
 const IndexPage = () => {
-
-
-
   const [dashboard, setDashboard] = useState({
+    updated: null,
     confirmed: 0,
     deaths: 0,
+    recovered: 0,
+    critical: 0,
     puis: 0,
     pums: 0,
     tests: 0,
-    recovered: 0,
-  });
-  const [cityData, setCityData] = useState([]);
+  })
 
-  const [cityLoading, setCityLoading] = useState(true);
-  const [dashboardLoading, setDashboardLoading] = useState(true);
+  const [cityData, setCityData] = useState([])
+  const [dailyDaity, setDailyData] = useState([])
+
+  const [cityLoading, setCityLoading] = useState(true)
+  const [dashboardLoading, setDashboardLoading] = useState(true)
 
   useEffect(() => {
     const fethchDashboard = async () => {
+      await axios
+        .get("https://corona-api.com/countries/PH")
+        .then(({ data }) => {
+          console.log(data)
 
-      const confirmed = axios.get(ENDPOINT.GET_COMMON_CONST_ENDPOINT('confirmed'));
-      const deaths = axios.get(ENDPOINT.GET_COMMON_CONST_ENDPOINT('deaths'));
-      const puis = axios.get(ENDPOINT.GET_COMMON_CONST_ENDPOINT('PUIs'));
-      const pums = axios.get(ENDPOINT.GET_COMMON_CONST_ENDPOINT('PUMs'));
-      const tests = axios.get(ENDPOINT.GET_COMMON_CONST_ENDPOINT('tests'));
-      const recovered = axios.get(ENDPOINT.GET_COMMON_CONST_ENDPOINT('recovered'));
-
-      axios.all(
-        [confirmed,
-          deaths,
-          puis,
-          pums,
-          tests,
-          recovered
-        ])
-        .then(axios.spread((...responses) => {
-          const respConfirm = Object.assign(...responses[0].data.features)
-          const respDeath = Object.assign(...responses[1].data.features)
-          const respPUI = Object.assign(...responses[2].data.features)
-          const respPUM = Object.assign(...responses[3].data.features)
-          const respTests = Object.assign(...responses[4].data.features)
-          const respRecovered = Object.assign(...responses[5].data.features)
+          const date = new Date(data.data.updated_at)
+            .toISOString()
+            .slice(0, 19)
+            .replace(/-/g, "/")
+            .replace("T", " ")
           setDashboard({
             ...dashboard,
-            confirmed: respConfirm.attributes.value,
-            deaths: respDeath.attributes.value,
-            puis: respPUI.attributes.value,
-            pums: respPUM.attributes.value,
-            tests: respTests.attributes.value,
-            recovered: respRecovered.attributes.value,
+            critical: data.data.latest_data.critical,
+            confirmed: data.data.latest_data.confirmed,
+            deaths: data.data.latest_data.deaths,
+            puis: data.data.latest_data.critical,
+            recovered: data.data.latest_data.recovered,
+            updated: date,
           })
 
-          setDashboardLoading(false);
-          // use/access the results 
-        })).catch(errors => {
-          // react on errors.
+          setDailyData(data.data.timeline.reverse())
+
+          setDashboardLoading(false)
         })
-
-    };
+    }
     const fetchDataByCity = async () => {
+      const cityData = await axios.get(ENDPOINT.BY_CITY_ENDPOINT)
+      const respCity = cityData.data.features
 
-      const cityData = await axios.get(ENDPOINT.BY_CITY_ENDPOINT);
-      const respCity = cityData.data.features;
       setCityData(respCity)
-      setCityLoading(false);
-    };
-    fethchDashboard();
-    fetchDataByCity();
-  }, []);
+      setCityLoading(false)
+    }
+    fethchDashboard()
+    fetchDataByCity()
+  }, [])
 
-  let byCityData = cityLoading ? loader : (
-    <Table singleLine >
+  let byCityData = cityLoading ? (
+    loader
+  ) : (
+    <Table singleLine>
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>City</Table.HeaderCell>
@@ -100,100 +98,179 @@ const IndexPage = () => {
         ))}
       </Table.Body>
     </Table>
-  );
+  )
 
   return (
     <Layout>
-      <SEO title="Home" 
-        description="View the current situation of corona virus in the Philippines" />
+      <SEO
+        title="Home"
+        description="View the current situation of corona virus in the Philippines"
+      />
       <div className={classes.Container}>
-        <h2><img className='corona' src="https://img.icons8.com/metro/26/000000/coronavirus.png" />COVID-19 Philippines</h2>
-
-        <Grid className={classes.Dashboard} textAlign='center' columns={3} >
+        <Grid textAlign="center" columns={2}>
           <Grid.Row>
             <Grid.Column>
-
-              <h2 className={classes.Confirmed}><Icon name='hospital outline' size='small' />{dashboardLoading ? loader : <CountUp end={dashboard.confirmed} />}</h2>
+              <h2>
+                <img
+                  className="corona"
+                  src="https://img.icons8.com/metro/26/000000/coronavirus.png"
+                />
+                COVID-19 Philippines
+              </h2>
+              <p>Data as of {dashboard.updated}</p>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+        <Grid
+          doubling
+          className={classes.Dashboard}
+          textAlign="center"
+          columns={4}
+        >
+          <Grid.Row>
+            <Grid.Column className={classes.Confirmed}>
+              <h2>
+                <Icon name="hospital outline" size="small" />
+                {dashboardLoading ? (
+                  loader
+                ) : (
+                  <CountUp end={dashboard.confirmed} />
+                )}
+              </h2>
               <p>Confirmed</p>
             </Grid.Column>
-            <Grid.Column>
-              <h2 className={classes.Deaths}><Icon name='bed' size='small' />{dashboardLoading ? loader : <CountUp end={dashboard.deaths} />}</h2>
+            <Grid.Column className={classes.Deaths}>
+              <h2>
+                <Icon name="bed" size="small" />
+                {dashboardLoading ? loader : <CountUp end={dashboard.deaths} />}
+              </h2>
               <p>Deaths</p>
             </Grid.Column>
-            <Grid.Column>
-              <h2 className={classes.Recovered}><Icon name='medkit' size='small' />{dashboardLoading ? loader : <CountUp end={dashboard.recovered} />}</h2>
+            <Grid.Column className={classes.Recovered}>
+              <h2>
+                <Icon name="medkit" size="small" />
+                {dashboardLoading ? (
+                  loader
+                ) : (
+                  <CountUp end={dashboard.recovered} />
+                )}
+              </h2>
               <p>Recovered</p>
             </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-              <h2>{dashboardLoading ? loader : <CountUp end={dashboard.tests} />}</h2>
-              <p>Tests Conducted</p>
-            </Grid.Column>
-            <Grid.Column>
-              <h2>{dashboardLoading ? loader : <CountUp end={dashboard.puis} />}</h2>
-              <p>Patients under investigation</p>
-            </Grid.Column>
-
-            <Grid.Column>
-              <h2>{dashboardLoading ? loader : <CountUp end={dashboard.pums} />}</h2>
-              <p>People under monitoring</p>
+            <Grid.Column className={classes.Critical}>
+              <h2>
+                <Icon name="lightning" size="small" />
+                {dashboardLoading ? (
+                  loader
+                ) : (
+                  <CountUp end={dashboard.critical} />
+                )}
+              </h2>
+              <p>Critical</p>
             </Grid.Column>
           </Grid.Row>
         </Grid>
-
-        <Grid stackable verticalAlign='middle' className={classes.Dashboard} >
-          <Grid.Row>
-            <Grid.Column width={12}>
-              <p>DOH launched the DOH COVID-19 emergency hotlines 02-894-COVID (02-894-26843) 
-                and 1555 in partnership with the National Emergency Hotline of the Department 
-                of Interior and Local Government (DILG), and PLDT and its wireless subsidiary 
-                Smart Communications Inc.
-              
-                Callers can ask questions if they suspect they are infected with COVID-19, 
-                or request assistance if they have symptoms and/or known exposure to confirmed 
-                cases or patients under investigation. The information collected from emergency 
-                calls is transmitted to the COVID-19 Emergency Operations Center and other relevant 
-                agencies for immediate facilitation and response.</p>
-            </Grid.Column>
-            <Grid.Column width={4}>
-              <a href="tel:1555"><Button fluid primary>Smart/PLDT: 1555</Button></a>
-              <br/>
-              <a href="tel:894-26843"><Button fluid primary>Landline: <br/> 894-26843 </Button></a>
-            </Grid.Column>
-
-          </Grid.Row>
-        </Grid>
-        
+        <div className={classes.Chart}>
+          <h3>Outbreak Trend</h3>
+          <ResponsiveContainer>
+            <AreaChart
+              width={500}
+              height={400}
+              data={dailyDaity}
+              margin={{
+                top: 10,
+                right: 30,
+                left: 0,
+                bottom: 0,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Area
+                type="monotone"
+                dataKey="deaths"
+                stackId="1"
+                stroke="red"
+                fill="pink"
+              />
+              <Area
+                type="monotone"
+                dataKey="recovered"
+                stackId="1"
+                stroke="#82ca9d"
+                fill="#82ca9d"
+              />
+              <Area
+                type="monotone"
+                dataKey="confirmed"
+                stackId="1"
+                stroke="#ffc658"
+                fill="#ffc658"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+        <div className={classes.Hotline}>
+          <Grid stackable verticalAlign="middle">
+            <Grid.Row>
+              <Grid.Column width={12}>
+                <p>
+                  DOH launched the DOH COVID-19 emergency hotlines 02-894-COVID
+                  (02-894-26843) and 1555 in partnership with the National
+                  Emergency Hotline of the Department of Interior and Local
+                  Government (DILG), and PLDT and its wireless subsidiary Smart
+                  Communications Inc. Callers can ask questions if they suspect
+                  they are infected with COVID-19, or request assistance if they
+                  have symptoms and/or known exposure to confirmed cases or
+                  patients under investigation.
+                </p>
+              </Grid.Column>
+              <Grid.Column width={4}>
+                <a href="tel:1555">
+                  <Button className={classes.Button} fluid primary>
+                    Smart/PLDT: 1555
+                  </Button>
+                </a>
+                <br />
+                <a href="tel:894-26843">
+                  <Button className={classes.Button} fluid primary>
+                    Landline: <br /> 894-26843{" "}
+                  </Button>
+                </a>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </div>
         <div>
-          <br/>
+          <br />
           <h2>Residence of confirmed cases</h2>
           {byCityData}
-
         </div>
         <br />
-        <br/>
-        <h2>How to protect yourself from Corona</h2>
-        <Grid stackable textAlign='center'  columns={3} >
+        <br />
+        <h2>Protect yourself and others</h2>
+        <Grid stackable textAlign="center" columns={3}>
           <Grid.Row>
             <Grid.Column>
-            <img src={todo2}/>
+              <img src={todo2} />
             </Grid.Column>
             <Grid.Column>
-            <img src={todo3}/>
+              <img src={todo3} />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
-            <img src={todo4}/>
+              <img src={todo4} />
             </Grid.Column>
             <Grid.Column>
-            <img src={todo1}/>
+              <img src={todo1} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
       </div>
-
     </Layout>
   )
 }

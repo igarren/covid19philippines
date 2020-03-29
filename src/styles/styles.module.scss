@@ -5,10 +5,31 @@ html,body{
 }
 
 .Dashboard{
-    h2{
-        &.Deaths{ color: darkred }
-        &.Confirmed{ color: red }
-        &.Recovered{ color: green }
+    
+    color: white;
+    .Confirmed{
+        background: #e49400;
+        padding: 2%;
+        border: 2px solid #ccc;
+        border-radius: 12px;
+    }
+    .Deaths{
+        background: red;
+        padding: 2%;
+        border: 2px solid #ccc;
+        border-radius: 12px;
+    }
+    .Recovered{
+        background: green;
+        padding: 2%;
+        border: 2px solid #ccc;
+        border-radius: 12px;
+    }
+    .Critical{
+        background: #8a6130;
+        padding: 2%;
+        border: 2px solid #ccc;
+        border-radius: 12px;
     }
 
     p{
@@ -16,9 +37,23 @@ html,body{
     }
 }
 
+.Chart{
+    height: 300px;
+    margin : 5% 0;
+}
+
+.Hotline{
+    margin-top: 10%;
+}
+
 .Container{
     padding: 5% 10%;
 
+}
+
+.Button{
+    border: 2px solid #ccc;
+    box-sizing: border-box;
 }
 
 @media only screen and (max-width: 600px) {
