@@ -21,7 +21,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts"
-import { toDateString } from '../components/util'
+import { toDateString, toDateTimeString } from "../components/util"
 const loader = <Loader active inline />
 const IndexPage = () => {
   const [dashboard, setDashboard] = useState({
@@ -30,13 +30,16 @@ const IndexPage = () => {
     deaths: 0,
     recovered: 0,
     activeCases: 0,
-    newConfirmed: 0,
-    newDeaths: 0,
   })
 
+  const [newData, setNewData] = useState({
+    newConfirmed: 0,
+    newDeaths: 0,
+    newRecovered: 0,
+  });
 
   const [cityData, setCityData] = useState([])
-  const [dailyDaity, setDailyData] = useState([])
+  const [dailyData, setDailyData] = useState([])
 
   const [cityLoading, setCityLoading] = useState(true)
   const [dashboardLoading, setDashboardLoading] = useState(true)
@@ -51,7 +54,7 @@ const IndexPage = () => {
           console.log(data.length)
           console.log(data[0])
           if (data && data.length > 0) {
-            const date = toDateString(new Date(data[0].lastUpdated))
+            const date = toDateTimeString(data[0].lastUpdated)
 
             setDashboard({
               ...dashboard,
@@ -59,26 +62,38 @@ const IndexPage = () => {
               confirmed: data[0].totalConfirmed,
               deaths: data[0].totalDeaths,
               recovered: data[0].totalRecovered,
-              newConfirmed: data[0].dailyConfirmed,
-              newDeaths: data[0].dailyDeaths,
               updated: date,
             })
           }
           setDashboardLoading(false)
         })
     }
-    const fethchDaily = async () => {
-
-      const date = new Date();
-      const firstDay = toDateString(new Date(date.getFullYear(), date.getMonth(), 1));
-      const lastDay = toDateString(new Date(date.getFullYear(), date.getMonth() + 1, 0));
+    const fetchDaily = async () => {
+      const date = new Date()
+      const firstDay = toDateString(
+        new Date(date.getFullYear(), date.getMonth(), 1)
+      )
+      const lastDay = toDateString(
+        new Date(date.getFullYear(), date.getMonth() + 1, 0)
+      )
       await axios
         .get(
           `https://api.coronatracker.com/v3/analytics/trend/country?countryCode=PH&startDate=2020-01-23&endDate=${lastDay}`
         )
         .then(({ data }) => {
-          console.log(data);
-          setDailyData(data);
+          if (date && data.length > 1) {
+            const reverseData = data.reverse()
+            setNewData({
+              ...newData,
+              newDeaths:
+                reverseData[0].total_deaths - reverseData[1].total_deaths,
+              newConfirmed:
+                reverseData[0].total_confirmed - reverseData[1].total_confirmed,
+              newRecovered:
+                reverseData[0].total_recovered - reverseData[1].total_recovered
+            })
+          }
+          setDailyData(data)
         })
     }
     const fetchDataByCity = async () => {
@@ -89,7 +104,7 @@ const IndexPage = () => {
     }
     fethchDashboard()
     fetchDataByCity()
-    fethchDaily()
+    fetchDaily()
   }, [])
 
   let byCityData = cityLoading ? (
@@ -113,6 +128,7 @@ const IndexPage = () => {
     </Table>
   )
 
+  let newActive = newData.newConfirmed - newData.newRecovered - newData.newDeaths;
 
   return (
     <Layout>
@@ -130,7 +146,7 @@ const IndexPage = () => {
                   className="corona"
                   src="https://img.icons8.com/metro/26/000000/coronavirus.png"
                 />
-                COVID-19 Philippines
+                COVID-19 Philippines Tracker
               </h2>
               <p>Data as of {dashboard.updated}</p>
             </Grid.Column>
@@ -151,9 +167,9 @@ const IndexPage = () => {
                 ) : (
                   <>
                     <CountUp end={dashboard.confirmed} />
-                    <span>
+                    <span className={classes.Addition}>
                       (+
-                      <CountUp end={dashboard.newConfirmed} />)
+                      <CountUp end={newData.newConfirmed} />)
                     </span>{" "}
                   </>
                 )}
@@ -166,7 +182,13 @@ const IndexPage = () => {
                 {dashboardLoading ? (
                   loader
                 ) : (
-                  <CountUp end={dashboard.activeCases} />
+                  <>
+                    <CountUp end={dashboard.activeCases} />
+                    <span className={classes.Addition}>
+                      (+
+                      <CountUp end={newActive} />)
+                    </span>
+                  </>
                 )}
               </h2>
               <p>Active Cases</p>
@@ -179,10 +201,10 @@ const IndexPage = () => {
                 ) : (
                   <>
                     <CountUp end={dashboard.deaths} />
-                    <span>
+                    <span className={classes.Addition}>
                       (+
-                      <CountUp end={dashboard.newDeaths} />)
-                    </span>{" "}
+                      <CountUp end={newData.newDeaths} />)
+                    </span>
                   </>
                 )}
               </h2>
@@ -196,6 +218,10 @@ const IndexPage = () => {
                 ) : (
                   <>
                     <CountUp end={dashboard.recovered} />
+                    <span className={classes.Addition}>
+                      (+
+                      <CountUp end={newData.newRecovered} />)
+                    </span>
                   </>
                 )}
               </h2>
@@ -209,7 +235,7 @@ const IndexPage = () => {
             <AreaChart
               width={500}
               height={400}
-              data={dailyDaity}
+              data={dailyData.reverse()}
               margin={{
                 top: 10,
                 right: 30,
@@ -218,7 +244,13 @@ const IndexPage = () => {
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey={"last_updated"}  tickFormatter={tick => (tick.split('T')[0])} />
+              <XAxis
+                dataKey={"last_updated"}
+                tickFormatter={tick => {
+                  const holder = tick.split("T")[0].split('-');
+                  return holder[1] + '/' + holder[2];
+                }}
+              />
               <YAxis />
               <Tooltip />
               <Legend align="center" />

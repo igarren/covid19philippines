@@ -17,22 +17,18 @@ html,body,h1,h2,h3,h4,h5,p,a{
     .Confirmed{
         background: #4FB1B1;
         padding: 2%;
-        border-radius: 12px;
     }
     .Deaths{
         background: #e85850;
         padding: 2%;
-        border-radius: 12px;
     }
     .Recovered{
         background: #50af50;
         padding: 2%;
-        border-radius: 12px;
     }
     .Active{
         background: #ea9024;
         padding: 2%;
-        border-radius: 12px;
     }
 
     p{
@@ -63,6 +59,12 @@ html,body,h1,h2,h3,h4,h5,p,a{
     animation: blink 1.2s infinite; 
 }
 
+
+.Addition {
+    display: block;
+    line-height: 1;
+    font-size: 0.7em;
+}
 @keyframes blink{
     0%{     color: red;    }
     49%{    color: red; }
