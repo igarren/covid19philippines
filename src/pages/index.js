@@ -169,7 +169,7 @@ const IndexPage = () => {
                   <CountUp end={dashboard.activeCases} />
                 )}
               </h2>
-              <p>Critical</p>
+              <p>Active Cases</p>
             </Grid.Column>
             <Grid.Column className={classes.Deaths}>
               <h2>
