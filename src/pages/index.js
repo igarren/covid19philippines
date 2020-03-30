@@ -51,8 +51,6 @@ const IndexPage = () => {
           "https://api.coronatracker.com/v3/stats/worldometer/country?countryCode=PH"
         )
         .then(({ data }) => {
-          console.log(data.length)
-          console.log(data[0])
           if (data && data.length > 0) {
             const date = toDateTimeString(data[0].lastUpdated)
 
@@ -70,9 +68,6 @@ const IndexPage = () => {
     }
     const fetchDaily = async () => {
       const date = new Date()
-      const firstDay = toDateString(
-        new Date(date.getFullYear(), date.getMonth(), 1)
-      )
       const lastDay = toDateString(
         new Date(date.getFullYear(), date.getMonth() + 1, 0)
       )
@@ -133,10 +128,9 @@ const IndexPage = () => {
   return (
     <Layout>
       <SEO
-        title="Home"
-        description="View the current situation of corona virus in the Philippines"
+        title="Covid 19 Tracker Philippines"
+        description="Covid 19 Tracker Philippines [Coronavirus]. View the current situation of corona virus in the Philippines"
       />
-
       <div className={classes.Container}>
         <Grid textAlign="center" columns={2}>
           <Grid.Row>
@@ -170,7 +164,7 @@ const IndexPage = () => {
                     <span className={classes.Addition}>
                       (+
                       <CountUp end={newData.newConfirmed} />)
-                    </span>{" "}
+                    </span>
                   </>
                 )}
               </h2>
@@ -300,13 +294,13 @@ const IndexPage = () => {
               <Grid.Column width={4}>
                 <a href="tel:1555">
                   <Button className={classes.Button} fluid primary>
-                    Smart/PLDT: 1555
+                    Smart/PLDT: <br /> 1555
                   </Button>
                 </a>
                 <br />
                 <a href="tel:894-26843">
                   <Button className={classes.Button} fluid primary>
-                    Landline: <br /> 894-26843{" "}
+                    Landline: <br /> 894-26843
                   </Button>
                 </a>
               </Grid.Column>
