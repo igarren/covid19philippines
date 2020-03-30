@@ -68,8 +68,9 @@ const IndexPage = () => {
     }
     const fetchDaily = async () => {
       const date = new Date()
+      var today = new Date();
       const lastDay = toDateString(
-        new Date(date.getFullYear(), date.getMonth() + 1, 0)
+        new Date(date.getFullYear(), date.getMonth() + 1, date.getDay() +1)
       )
       await axios
         .get(
