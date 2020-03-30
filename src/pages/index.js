@@ -254,21 +254,22 @@ const IndexPage = () => {
               <YAxis />
               <Tooltip />
               <Legend align="center" />
+             
               <Area
+                name="Recovered"
+                type="monotone"
+                dataKey="total_recovered"
+                stackId="3"
+                stroke="#82ca9d"
+                fill="#82ca9d"
+              />
+               <Area
                 name="Deaths"
                 type="monotone"
                 dataKey="total_deaths"
                 stackId="1"
                 stroke="red"
                 fill="pink"
-              />
-              <Area
-                name="Recovered"
-                type="monotone"
-                dataKey="total_recovered"
-                stackId="1"
-                stroke="#82ca9d"
-                fill="#82ca9d"
               />
               <Area
                 name="Confirmed"
