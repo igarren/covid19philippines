@@ -4,7 +4,7 @@ import { Grid, Icon } from 'semantic-ui-react';
 const Footer = () => (
   <footer
     style={{
-      background: `#cce3db`,
+      background: `#4FB1B1`,
     }}
   >
     
