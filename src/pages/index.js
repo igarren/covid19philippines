@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from "react"
-import { Link } from "gatsby"
-import axios from "axios"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
-import * as ENDPOINT from "../../const"
-import { Grid, Loader, Table, Icon, Button, Segment } from "semantic-ui-react"
-import classes from "../styles/styles.module.scss"
-import CountUp from "react-countup"
-import todo2 from "../images/corona-todo-2.png"
-import todo3 from "../images/corona-todo-3.png"
-import todo4 from "../images/corona-todo-4.png"
-import todo1 from "../images/corona-todo-1.png"
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Layout from "../components/layout";
+import SEO from "../components/seo";
+import * as ENDPOINT from "../../lib/const";
+import { toDateString } from "../../lib/util"
+import { Grid, Loader, Table, Icon, Button } from "semantic-ui-react";
+import classes from "../styles/styles.module.scss";
+import CountUp from "react-countup";
 import {
   AreaChart,
   Area,
@@ -23,7 +19,7 @@ import {
   BarChart ,
   Bar 
 } from "recharts"
-import { toDateString } from "../components/util"
+
 
 const loader = <Loader active inline />
 const IndexPage = () => {
@@ -62,9 +58,9 @@ const IndexPage = () => {
             let date = Math.round(lastUpdated / 60000);
 
             if(date > 60) {
-              date =  Math.round(date / 60).toString() + ' hour ago';
+              date =  Math.round(date / 60).toString() + ' hour(s) ago';
             } else{
-              date =  date.toString() + ' minutes ago';
+              date =  date.toString() + ' minute(s) ago';
             }
 
             setDashboard({
@@ -369,49 +365,37 @@ const IndexPage = () => {
         
         <br/>
         <h2>Protect yourself and others</h2>
-        <Grid stackable textAlign="center" columns={3}>
-          <Grid.Row>
-            <Grid.Column>
-              <img style={{height:"80px"}} src="https://img.icons8.com/clouds/100/000000/wash-your-hands.png"/>
+        <Grid stackable columns='equal' textAlign="center"  >
+          <Grid.Row >
+            <Grid.Column >
+              <img src="https://img.icons8.com/clouds/100/000000/wash-your-hands.png"/>
                 <p>Wash your hands with <br/> soap and water</p>
             </Grid.Column>
             <Grid.Column>
-              <img src="https://img.icons8.com/color/80/000000/sneeze.png"/>
-              <p>Cover your nose and mouth when sneezing</p>
+              <img src="https://img.icons8.com/clouds/100/000000/crowd.png"/>
+              <p>Avoid close contact when  <br/>  experiencing cough or fever</p>
             </Grid.Column>
             <Grid.Column>
-              <img src="https://img.icons8.com/color/80/000000/sneeze.png"/>
-              <p>Cover your nose and mouth when sneezing</p>
+              <img src="https://img.icons8.com/clouds/100/000000/doctors-bag.png"/> 
+              <p>Seek medical attention  <br/> if you have symptoms</p>
+              
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
-              <img src={todo4} />
+            <img src="https://img.icons8.com/color/96/000000/coughing--v2.png"/>
+            <p>Cover your nose and mouth  <br/>  when sneezing or coughing</p>
             </Grid.Column>
             <Grid.Column>
-              <img src={todo1} />
+            <img src="https://img.icons8.com/color/96/000000/protection-mask.png"/>
+            <p>Use face mask</p>
+            </Grid.Column>
+            <Grid.Column>
+            <img src="https://img.icons8.com/plasticine/100/000000/delete.png"/>
+            <p>Throw tissue into a <br/> closed trash can</p>
             </Grid.Column>
           </Grid.Row>
         </Grid>
-        {/* <Grid stackable textAlign="center" columns={3}>
-          <Grid.Row>
-            <Grid.Column>
-              <img src={todo2} />
-            </Grid.Column>
-            <Grid.Column>
-              <img src={todo3} />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-              <img src={todo4} />
-            </Grid.Column>
-            <Grid.Column>
-              <img src={todo1} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid> */}
-        
       </div>
     </Layout>
   )

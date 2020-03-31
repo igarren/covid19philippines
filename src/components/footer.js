@@ -4,7 +4,7 @@ import { Grid, Icon } from 'semantic-ui-react';
 const Footer = () => (
   <footer
     style={{
-      background: `rgb(127, 191, 170)`,
+      background: `#cce3db`,
     }}
   >
     
@@ -16,26 +16,18 @@ const Footer = () => (
       }}
     >
    
-       <Grid stackable columns={3} verticalAlign='middle'>
+       <Grid stackable columns={2} verticalAlign='middle'>
         <Grid.Row>
             <Grid.Column>
             <strong>Sources</strong>  <br/>  
-            <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public"> WHO</a><br/>
-            <a href="https://ncovtracker.doh.gov.ph/">DOH Philippines</a><br/>
-            <a href="https://github.com/CSSEGISandData/COVID-19"> Johns Hopkins CSSE</a><br/>
-            <a href="https://api.coronatracker.com/">Corona Tracker</a>
+            <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public"> WHO</a>, 
+            <a href="https://ncovtracker.doh.gov.ph/">DOH Philippines</a>, 
+            <a href="https://coronatracker.com/">Corona Tracker</a><br/>
+            Icons by  <a href="https://icons8.com/">Icons8</a>
             </Grid.Column>
             <Grid.Column>
-                
-               <strong>Images from</strong> <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public"> WHO</a><br/>
-               <strong>Icons by</strong>  <a href="https://icons8.com/">Icons8</a><br/>
-        
-            </Grid.Column>
-            <Grid.Column>
-            View this on <Icon color='white' name='github' size='large' /><a href="https://github.com/igarren/covid19philippines" target="_blank">github</a>
+            View this on <Icon color='white' name='github' size='large' /><a href="https://github.com/igarren/covid19philippines" target="_blank">Github</a>
             <br/>Created with  <Icon color='brown' name='coffee' size='small' /> and <Icon color='red' name='heart' size='small' /> by <a href="https://github.com/igarren/" target="_blank">@igarren</a> 
-                
-                
             </Grid.Column>
         </Grid.Row>
        </Grid>
