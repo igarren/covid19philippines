@@ -156,7 +156,7 @@ const IndexPage = () => {
         description="Covid 19 Tracker Philippines [Coronavirus]. View the current situation of corona virus in the Philippines"
       />
       <div className={classes.Container}>
-        <Grid textAlign="center" columns={2}>
+        <Grid textAlign="center" columns='equal'>
           <Grid.Row>
             <Grid.Column>
               <h2 className={classes.Title}>
@@ -164,7 +164,8 @@ const IndexPage = () => {
                   className="corona"
                   src="https://img.icons8.com/metro/26/000000/coronavirus.png"
                 />
-                COVID-19 Philippines Tracker
+                COVID-19  <br className={classes.Sp}/>
+                Philippines Tracker
               </h2>
               <p>Last updated {dashboard.updated}</p>
             </Grid.Column>
@@ -365,7 +366,7 @@ const IndexPage = () => {
         <br/>
         <h2>Protect yourself and others</h2>
         <Grid doubling columns='equal' textAlign="center"  >
-            <Grid.Column mobile={8} tablet={8} computer={5}>
+            <Grid.Column mobile={9} tablet={8} computer={5}>
               <img src="https://img.icons8.com/clouds/100/000000/wash-your-hands.png"/>
                 <p>Wash your hands with <br/> soap and water</p>
             </Grid.Column>
