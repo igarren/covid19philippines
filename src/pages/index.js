@@ -329,8 +329,7 @@ const IndexPage = () => {
           <Grid stackable verticalAlign="middle">
             <Grid.Row>
               <Grid.Column width={12}>
-                <h3> Emergency hotlines 02-894-COVID <br className={classes.Sp} />
-                  (02-894-26843) and 1555</h3>
+                <h3> Emergency hotlines</h3>
                 <p>
                   Callers can ask questions if they suspect
                   they are infected with COVID-19, or request assistance if they
@@ -365,36 +364,32 @@ const IndexPage = () => {
         
         <br/>
         <h2>Protect yourself and others</h2>
-        <Grid stackable columns='equal' textAlign="center"  >
-          <Grid.Row >
-            <Grid.Column >
+        <Grid doubling columns='equal' textAlign="center"  >
+            <Grid.Column mobile={8} tablet={8} computer={5}>
               <img src="https://img.icons8.com/clouds/100/000000/wash-your-hands.png"/>
                 <p>Wash your hands with <br/> soap and water</p>
             </Grid.Column>
-            <Grid.Column>
+            <Grid.Column mobile={8} tablet={8} computer={5}>
               <img src="https://img.icons8.com/clouds/100/000000/crowd.png"/>
               <p>Avoid close contact when  <br/>  experiencing cough or fever</p>
             </Grid.Column>
-            <Grid.Column>
+            <Grid.Column mobile={8} tablet={8} computer={5}>
               <img src="https://img.icons8.com/clouds/100/000000/doctors-bag.png"/> 
               <p>Seek medical attention  <br/> if you have symptoms</p>
               
             </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
+            <Grid.Column mobile={8} tablet={8} computer={5}>
             <img src="https://img.icons8.com/color/96/000000/coughing--v2.png"/>
             <p>Cover your nose and mouth  <br/>  when sneezing or coughing</p>
             </Grid.Column>
-            <Grid.Column>
+            <Grid.Column mobile={8} tablet={8} computer={5}>
             <img src="https://img.icons8.com/color/96/000000/protection-mask.png"/>
             <p>Use face mask</p>
             </Grid.Column>
-            <Grid.Column>
+            <Grid.Column mobile={8} tablet={8} computer={5}>
             <img src="https://img.icons8.com/plasticine/100/000000/delete.png"/>
             <p>Throw tissue into a <br/> closed trash can</p>
             </Grid.Column>
-          </Grid.Row>
         </Grid>
       </div>
     </Layout>
