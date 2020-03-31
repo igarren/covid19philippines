@@ -23,7 +23,8 @@ import {
   BarChart ,
   Bar 
 } from "recharts"
-import { toDateString, toDateTimeString } from "../components/util"
+import { toDateString } from "../components/util"
+
 const loader = <Loader active inline />
 const IndexPage = () => {
   const [dashboard, setDashboard] = useState({
@@ -56,7 +57,15 @@ const IndexPage = () => {
         )
         .then(({ data }) => {
           if (data && data.length > 0) {
-            const date = toDateTimeString(data[0].lastUpdated)
+            const currDate = new Date();
+            const lastUpdated = currDate - new Date(data[0].lastUpdated);
+            let date = Math.round(lastUpdated / 60000);
+
+            if(date > 60) {
+              date =  Math.round(date / 60).toString() + ' hour ago';
+            } else{
+              date =  date.toString() + ' minutes ago';
+            }
 
             setDashboard({
               ...dashboard,
@@ -161,7 +170,7 @@ const IndexPage = () => {
                 />
                 COVID-19 Philippines Tracker
               </h2>
-              <p>Data as of {dashboard.updated}</p>
+              <p>Last updated {dashboard.updated}</p>
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -266,7 +275,7 @@ const IndexPage = () => {
               />
               <YAxis />
               <Tooltip />
-              <Legend align="center" />
+              <Legend align="right"  />
              
               <Area
                 name="Recovered"
@@ -309,7 +318,11 @@ const IndexPage = () => {
               bottom: 0,
             }}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
+            <XAxis dataKey="date"
+            tickFormatter={tick => {
+              const holder = tick.split("T")[0].split('-');
+              return holder[1] + '/' + holder[2];
+            }} />
             <YAxis />
             <Tooltip />
             <Bar name="Confirmed" dataKey="dailyConfirmed" fill="#25aeae" />
@@ -320,27 +333,26 @@ const IndexPage = () => {
           <Grid stackable verticalAlign="middle">
             <Grid.Row>
               <Grid.Column width={12}>
+                <h3> Emergency hotlines 02-894-COVID <br className={classes.Sp} />
+                  (02-894-26843) and 1555</h3>
                 <p>
-                  DOH launched the DOH COVID-19 emergency hotlines 02-894-COVID
-                  (02-894-26843) and 1555 in partnership with the National
-                  Emergency Hotline of the Department of Interior and Local
-                  Government (DILG), and PLDT and its wireless subsidiary Smart
-                  Communications Inc. Callers can ask questions if they suspect
+                  Callers can ask questions if they suspect
                   they are infected with COVID-19, or request assistance if they
                   have symptoms and/or known exposure to confirmed cases or
                   patients under investigation.
                 </p>
               </Grid.Column>
               <Grid.Column width={4}>
-                <a href="tel:1555">
-                  <Button className={classes.Button} fluid primary>
-                    Smart/PLDT: <br /> 1555
+                <a className={classes.Button} href="tel:1555">
+                  <Button  fluid primary>
+                    Smart/PLDT <br />
+                    <Icon name="phone" size="small" /> 1555
                   </Button>
                 </a>
-                <br />
-                <a href="tel:894-26843">
-                  <Button className={classes.Button} fluid primary>
-                    Landline: <br /> 894-26843
+                <a  className={classes.Button} href="tel:894-26843">
+                  <Button  fluid primary>
+                    Landline <br /> 
+                    <Icon name="phone" size="small" />894-26843
                   </Button>
                 </a>
               </Grid.Column>
@@ -350,12 +362,38 @@ const IndexPage = () => {
         <div>
           <br />
           <h2>Residence of confirmed cases</h2>
-          {byCityData}
+          <div className={classes.Table}> 
+            {byCityData}
+          </div>
         </div>
-        <br />
-        <br />
+        
+        <br/>
         <h2>Protect yourself and others</h2>
         <Grid stackable textAlign="center" columns={3}>
+          <Grid.Row>
+            <Grid.Column>
+              <img style={{height:"80px"}} src="https://img.icons8.com/clouds/100/000000/wash-your-hands.png"/>
+                <p>Wash your hands with <br/> soap and water</p>
+            </Grid.Column>
+            <Grid.Column>
+              <img src="https://img.icons8.com/color/80/000000/sneeze.png"/>
+              <p>Cover your nose and mouth when sneezing</p>
+            </Grid.Column>
+            <Grid.Column>
+              <img src="https://img.icons8.com/color/80/000000/sneeze.png"/>
+              <p>Cover your nose and mouth when sneezing</p>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+              <img src={todo4} />
+            </Grid.Column>
+            <Grid.Column>
+              <img src={todo1} />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+        {/* <Grid stackable textAlign="center" columns={3}>
           <Grid.Row>
             <Grid.Column>
               <img src={todo2} />
@@ -372,7 +410,8 @@ const IndexPage = () => {
               <img src={todo1} />
             </Grid.Column>
           </Grid.Row>
-        </Grid>
+        </Grid> */}
+        
       </div>
     </Layout>
   )

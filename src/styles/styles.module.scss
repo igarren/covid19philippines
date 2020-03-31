@@ -43,7 +43,7 @@ html,body,h1,h2,h3,h4,h5,p,a{
 }
 
 .Hotline{
-    margin-top: 10%;
+    margin-top: 50px;
 }
 
 .Container{
@@ -52,8 +52,10 @@ html,body,h1,h2,h3,h4,h5,p,a{
 }
 
 .Button{
-    border: 2px solid #ccc;
+    button{
     box-sizing: border-box;
+    margin: 3px!important;
+    }
 }
 
 .Status{
@@ -61,22 +63,42 @@ html,body,h1,h2,h3,h4,h5,p,a{
 }
 
 
+.Table{
+    max-height: 487px;
+    overflow-y: scroll;
+}
+
 .Addition {
     display: block;
     line-height: 1;
     font-size: 0.6em;
 }
-@keyframes blink{
-    0%{     color: red;    }
-    49%{    color: red; }
-    60%{    color: transparent; }
-    99%{    color:transparent;  }
-    100%{   color: red;    }
+
+.Sp{
+    display: none;
 }
 
 @media only screen and (max-width: 600px) {
+    .Sp{
+        display: initial;
+    }
+
     .Container{
         padding: 5% 0;
-    
+    }
+
+    .Chart{
+        text-align: center;
+    }
+
+    .Table{
+        max-height: 411px;
+    }
+
+    .Hotline{
+        margin-top: 15%;
+        h3{
+            text-align: center;
+        }
     }
 }
