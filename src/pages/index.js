@@ -357,16 +357,16 @@ const IndexPage = () => {
         </div>
         <div>
           <br />
-          <h2>Residence of confirmed cases</h2>
+          <h3>Residence of confirmed cases</h3>
           <div className={classes.Table}> 
             {byCityData}
           </div>
         </div>
         
         <br/>
-        <h2>Protect yourself and others</h2>
+        <h3>Protect yourself and others</h3>
         <Grid doubling columns='equal' textAlign="center"  >
-            <Grid.Column mobile={9} tablet={8} computer={5}>
+            <Grid.Column mobile={8} tablet={8} computer={5}>
               <img src="https://img.icons8.com/clouds/100/000000/wash-your-hands.png"/>
                 <p>Wash your hands with <br/> soap and water</p>
             </Grid.Column>
