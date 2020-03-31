@@ -301,7 +301,13 @@ const IndexPage = () => {
           <BarChart
             width={500}
             height={400}
-            data={increasePerDay}>
+            data={increasePerDay}
+            margin={{
+              top: 10,
+              right: 30,
+              left: 0,
+              bottom: 0,
+            }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
             <YAxis />
