@@ -20,6 +20,8 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
+  BarChart ,
+  Bar 
 } from "recharts"
 import { toDateString, toDateTimeString } from "../components/util"
 const loader = <Loader active inline />
@@ -40,6 +42,8 @@ const IndexPage = () => {
 
   const [cityData, setCityData] = useState([])
   const [dailyData, setDailyData] = useState([])
+
+  const [increasePerDay, setIncreasePerDay] = useState([])
 
   const [cityLoading, setCityLoading] = useState(true)
   const [dashboardLoading, setDashboardLoading] = useState(true)
@@ -88,6 +92,20 @@ const IndexPage = () => {
               newRecovered:
                 reverseData[0].total_recovered - reverseData[1].total_recovered
             })
+
+            const increasePerDay = [];
+            
+            let prevConfirmed  = 0;
+            data.reverse().forEach((day,i) => {
+
+              increasePerDay.push({date : day.last_updated.split('T')[0], 
+                                  dailyConfirmed : day.total_confirmed - prevConfirmed});
+
+              prevConfirmed = day.total_confirmed;
+
+            });
+            const lastFifteenDays = increasePerDay.reverse().slice(0, 15);
+            setIncreasePerDay(lastFifteenDays.reverse());
           }
           setDailyData(data)
         })
@@ -230,7 +248,7 @@ const IndexPage = () => {
             <AreaChart
               width={500}
               height={400}
-              data={dailyData.reverse()}
+              data={dailyData}
               margin={{
                 top: 10,
                 right: 30,
@@ -275,6 +293,21 @@ const IndexPage = () => {
                 fill="#25aeae"
               />
             </AreaChart>
+          </ResponsiveContainer>
+        </div>
+        <div className={classes.Chart}>
+          <h3>Daily Increase (Last 15 days)</h3>
+          <ResponsiveContainer>
+          <BarChart
+            width={500}
+            height={400}
+            data={increasePerDay}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Bar name="Confirmed" dataKey="dailyConfirmed" fill="#25aeae" />
+          </BarChart>
           </ResponsiveContainer>
         </div>
         <div className={classes.Hotline}>
