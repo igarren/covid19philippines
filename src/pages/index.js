@@ -146,7 +146,7 @@ const IndexPage = () => {
         ))}
       </Table.Body>
     </Table>
-    : 'Uh ohh... Seems DOH is down right now.'
+    : 'Uh ohh... Seems DOH server is down right now.'
   )
 
   let newActive = newData.newConfirmed - newData.newRecovered - newData.newDeaths;
