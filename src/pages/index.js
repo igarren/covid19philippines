@@ -129,6 +129,7 @@ const IndexPage = () => {
   let byCityData = cityLoading ? (
     loader
   ) : (
+    cityData ?
     <Table striped singleLine>
       <Table.Header>
         <Table.Row>
@@ -145,6 +146,7 @@ const IndexPage = () => {
         ))}
       </Table.Body>
     </Table>
+    : 'Uh ohh... Seems DOH is down right now.'
   )
 
   let newActive = newData.newConfirmed - newData.newRecovered - newData.newDeaths;
